@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename local variable &apos;imageView&apos; in &apos;com.designproject.dreamcoding.activity.PuzzleActivity.onActivityResult(...)&apos; to &apos;mImageView&apos;&#x0D;&#x0A;- Original project: &apos;DreamCoding&apos;&#x0D;&#x0A;- Original element: &apos;com.designproject.dreamcoding.activity.PuzzleActivity.onActivityResult(int, int, Intent).imageView&apos;&#x0D;&#x0A;- Renamed element: &apos;imageView&apos;&#x0D;&#x0A;- Update references to refactored element" description="Rename local variable &apos;imageView&apos;" id="org.eclipse.jdt.ui.rename.local.variable" input="/src&lt;com.designproject.dreamcoding.activity{PuzzleActivity.java[PuzzleActivity~onActivityResult~I~I~QIntent;@imageView!2632!2696!2665!2673!QImageView;!67108880!false" name="mImageView" references="true" stamp="1400503324807" version="1.0"/>
+</session>

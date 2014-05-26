@@ -1,0 +1,125 @@
+package com.designproject.dreamcoding.activity;
+
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.bluetooth.BluetoothClass.Device;
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Bundle;
+import android.provider.MediaStore;
+import android.view.Menu;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnTouchListener;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+
+import com.designproject.dreamcoding.R;
+
+public class PuzzleActivity extends Activity {
+
+	private static int RESULT_LOAD_IMAGE = 1;
+
+    int startX;
+    int startY;
+    int imageX;
+    int imageY;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_puzzle);
+		
+        Button buttonLoadImage = (Button) findViewById(R.id.button_loadimage);
+        buttonLoadImage.setOnClickListener(new View.OnClickListener() {
+        	
+            @Override
+            public void onClick(View arg0) {
+
+                Intent i = new Intent(
+                        Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+                startActivityForResult(i, RESULT_LOAD_IMAGE);
+            }
+        });
+	}
+	
+    @SuppressLint("NewApi")
+	@Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        
+        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+
+            Cursor cursor = getContentResolver().query(selectedImage,
+                    filePathColumn, null, null, null);
+            cursor.moveToFirst();
+
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String picturePath = cursor.getString(columnIndex);
+            cursor.close();
+
+            final ImageView imageView = (ImageView) findViewById(R.id.imgView);
+            imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+            
+            imageX = (int) imageView.getX();
+            imageY = (int) imageView.getY();
+            
+            imageView.setOnTouchListener(new OnTouchListener() {
+
+                public boolean onTouch(View v, MotionEvent event) {
+                    // TODO Auto-generated method stub
+                    int eid = event.getAction();
+                    switch (eid) {
+                    
+                    case MotionEvent.ACTION_DOWN:
+                    	startX = (int) event.getRawX();
+                    	startY = (int) event.getRawY();
+                    	break;
+                    
+                    case MotionEvent.ACTION_MOVE:
+
+                        int x = (int) event.getRawX();
+                        int y = (int) event.getRawY();
+                        
+//                        v.scrollTo(imageX + startX -  x, imageY + startY -  y);
+//                        Log.i("imagex, startx , x :", imageX + ", " + startX + ", " + x);
+                        RelativeLayout.LayoutParams mParams = (RelativeLayout.LayoutParams) imageView.getLayoutParams();
+   
+                        mParams.leftMargin = Math.max(imageX - (startX -  x), 0);
+                        mParams.topMargin = Math.max(imageY - (startY -  y), 0);
+                        imageView.setLayoutParams(mParams);
+                        
+                        break;
+                        
+
+                        
+                    case MotionEvent.ACTION_UP:
+                    	imageX = (int) imageView.getX();
+                    	imageY = (int) imageView.getY();
+                    	break;
+
+                    default:
+                        break;
+                    }
+                    return true;
+                }
+            });
+
+        }
+    }
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.puzzle, menu);
+		return true;
+	}
+
+}
