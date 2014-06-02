@@ -4,11 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
+import com.actionbarsherlock.view.Menu;
 import com.designproject.dreamcoding.R;
 
 public class SingleActivity extends DefaultActivity {
@@ -35,7 +35,7 @@ public class SingleActivity extends DefaultActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.single, menu);
+		getSupportMenuInflater().inflate(R.menu.single, menu);
 		return true;
 	}
 	
