@@ -16,12 +16,11 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
@@ -29,6 +28,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.designproject.dreamcoding.R;
 import com.designproject.dreamcoding.listener.PanAndZoomListener;
 import com.designproject.dreamcoding.listener.PanAndZoomListener.Anchor;
+import com.designproject.dreamcoding.listener.testListener;
 
 public class PuzzleActivity extends DefaultActivity {
 
@@ -48,7 +48,7 @@ public class PuzzleActivity extends DefaultActivity {
 	private Bitmap[] mOrgImage = new Bitmap[10];
 	private int currentAngle = 0;
 	
-	private MenuItem[] actionbarMenu = new MenuItem[3];
+	private MenuItem[] actionbarMenu = new MenuItem[4];
 
 	// 한번에 회전해야 되는 각도
 	private static final int ROTATE_VALUE = 10;
@@ -79,10 +79,13 @@ public class PuzzleActivity extends DefaultActivity {
 		mOrgImage[imageId] = crop(R.drawable.mr_brown); //자르고 토막내기
 		mImageView[imageId].setImageBitmap(mOrgImage[imageId]);
 		mImageView[imageId].setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT));
-
+		//TODO 매트릭스랑 뷰바운드 충돌일어남... 동시에 작동해주지 않음.
+		mImageView[imageId].setScaleType(ScaleType.MATRIX);
+		mImageView[imageId].setAdjustViewBounds(true);
 		imageViewHolder.addView(mImageView[imageId]);
 
 		mImageView[imageId].setOnTouchListener(new PanAndZoomListener(imageViewHolder, mImageView[imageId], Anchor.TOPLEFT));
+		//mImageView[imageId].setOnTouchListener(new testListener());
 
 		//회전 및 그림 불러오기 기능 숨겨두긔잼
 		buttonLoadImage.setVisibility(View.INVISIBLE);
@@ -185,13 +188,24 @@ public class PuzzleActivity extends DefaultActivity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		actionbarMenu[0] = menu
 				.add(0, 0, 0, "MENU")
-				;
-		actionbarMenu[0].setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+				.setIcon(R.drawable.puzzle_03);
+		actionbarMenu[0].setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 		
 		actionbarMenu[1] = menu
-				.add(0, 1, 1, "00 : 00");
-		actionbarMenu[1].setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+				.add(0, 1, 1, "100%")
+				.setIcon(R.drawable.puzzle_04);
+		actionbarMenu[1].setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 		
+		actionbarMenu[2] = menu
+				.add(0, 2, 2, "00 : 00")
+				.setIcon(R.drawable.puzzle_05);
+		actionbarMenu[2].setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+		
+		actionbarMenu[3] = menu
+				.add(0, 3, 3, "?")
+				.setIcon(R.drawable.puzzle_06);
+		actionbarMenu[3].setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS );
+
 		return true;
 	}
 	

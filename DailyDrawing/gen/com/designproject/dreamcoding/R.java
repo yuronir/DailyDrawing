@@ -686,10 +686,12 @@ containing a value of this type.
         public static final int abs__bright_foreground_disabled_holo_light=0x7f060005;
         public static final int abs__bright_foreground_holo_dark=0x7f060002;
         public static final int abs__bright_foreground_holo_light=0x7f060003;
-        public static final int abs__primary_text_disable_only_holo_dark=0x7f060006;
-        public static final int abs__primary_text_disable_only_holo_light=0x7f060007;
-        public static final int abs__primary_text_holo_dark=0x7f060008;
-        public static final int abs__primary_text_holo_light=0x7f060009;
+        public static final int abs__primary_text_disable_only_holo_dark=0x7f060008;
+        public static final int abs__primary_text_disable_only_holo_light=0x7f060009;
+        public static final int abs__primary_text_holo_dark=0x7f06000a;
+        public static final int abs__primary_text_holo_light=0x7f06000b;
+        public static final int actionBarColor=0x7f060006;
+        public static final int titleTextColor=0x7f060007;
     }
     public static final class dimen {
         /**  Default height of an action bar. 
@@ -912,6 +914,13 @@ containing a value of this type.
         public static final int abs__toast_frame=0x7f02006f;
         public static final int ic_launcher=0x7f020070;
         public static final int mr_brown=0x7f020071;
+        public static final int puzzle_01=0x7f020072;
+        public static final int puzzle_02=0x7f020073;
+        public static final int puzzle_03=0x7f020074;
+        public static final int puzzle_04=0x7f020075;
+        public static final int puzzle_05=0x7f020076;
+        public static final int puzzle_06=0x7f020077;
+        public static final int puzzle_07=0x7f020078;
     }
     public static final class id {
         public static final int abs__action_bar=0x7f040020;
@@ -1065,11 +1074,15 @@ containing a value of this type.
         /** 
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+
+
     
 
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
             backward-compatibility can go here.
+
+
         
 
         Base application theme for API 11+. This theme completely replaces
@@ -1088,6 +1101,14 @@ containing a value of this type.
  All customizations that are NOT specific to a particular API-level can go here. 
          */
         public static final int AppTheme=0x7f0a005a;
+        public static final int MyTheme=0x7f0a005b;
+        /**  <item name="titleTextStyle">@style/MyTheme.ActionBar.TitleTextStyle</item>
+    </style>
+
+    <style name="MyTheme.ActionBar.TitleTextStyle" parent="TextAppearance.Sherlock.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/titleTextColor</item>
+         */
+        public static final int MyTheme_ActionBarStyle=0x7f0a005c;
         public static final int Sherlock___TextAppearance_Small=0x7f0a0046;
         public static final int Sherlock___Theme=0x7f0a0051;
         public static final int Sherlock___Theme_DarkActionBar=0x7f0a0053;

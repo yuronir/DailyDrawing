@@ -237,6 +237,9 @@ public class PanAndZoomListener implements OnTouchListener {
 			// Things to try: use a scroll view and set the pan from the scrollview
 			// when panning, and set the pan of the scroll view when zooming
 
+			float winWidth = window.getWidth();
+			float winHeight = window.getHeight();
+
 			if (currentZoom <= 1f) {
 				currentPan.x = 0;
 				currentPan.y = 0;
@@ -254,19 +257,44 @@ public class PanAndZoomListener implements OnTouchListener {
 				currentPan.y = Math.max(-maxPanY, Math.min(0, currentPan.y));
 			}
 
-			MarginLayoutParams lp = (MarginLayoutParams) child.getLayoutParams();
+			if (child instanceof ImageView && ((ImageView) child).getScaleType()== ImageView.ScaleType.MATRIX) {
+				ImageView view = (ImageView) child;
+				Drawable drawable = view.getDrawable();
+				if (drawable != null) {
+					Bitmap bm = ((BitmapDrawable) drawable).getBitmap();
+					if (bm != null) {
+						// Limit Pan
 
-			if(baseWidth == 0){
-				baseWidth = child.getWidth();
-				baseHeight = child.getHeight();
+						float bmWidth = bm.getWidth();
+						float bmHeight = bm.getHeight();
+
+						float fitToWindow = Math.min(winWidth / bmWidth, winHeight / bmHeight);
+						float xOffset = (winWidth - bmWidth * fitToWindow) * 0.5f * currentZoom;
+						float yOffset = (winHeight - bmHeight * fitToWindow) * 0.5f * currentZoom;
+
+						matrix.reset();
+						matrix.postScale(currentZoom * fitToWindow, currentZoom * fitToWindow);
+						child.setScaleX(currentZoom * fitToWindow);
+						child.setScaleY(currentZoom * fitToWindow);
+						matrix.postTranslate(currentPan.x + xOffset, currentPan.y + yOffset);
+						((ImageView) child).setImageMatrix(matrix);
+					}
+				}
+			} else {
+				MarginLayoutParams lp = (MarginLayoutParams) child.getLayoutParams();
+
+				if(baseWidth == 0){
+					baseWidth = child.getWidth();
+					baseHeight = child.getHeight();
+				}
+				//화면 밖으로 나가지 않게
+				lp.width = (int) (baseWidth * currentZoom);
+				lp.height = (int) (baseHeight * currentZoom);
+				lp.leftMargin = (int) Math.min(Math.max(0, imageCenter.x - lp.width/2), window.getWidth() - lp.width);
+				lp.topMargin = (int) Math.min(Math.max(0, imageCenter.y - lp.height/2), window.getHeight() - lp.height);
+
+				child.setLayoutParams(lp);
 			}
-			//화면 밖으로 나가지 않게
-			lp.width = (int) (baseWidth * currentZoom);
-			lp.height = (int) (baseHeight * currentZoom);
-			lp.leftMargin = (int) Math.min(Math.max(0, imageCenter.x - lp.width/2), window.getWidth() - lp.width);
-			lp.topMargin = (int) Math.min(Math.max(0, imageCenter.y - lp.height/2), window.getHeight() - lp.height);
-
-			child.setLayoutParams(lp);
 		}
 
 		@SuppressLint("NewApi")
@@ -275,6 +303,13 @@ public class PanAndZoomListener implements OnTouchListener {
 			float x  = child.getX() + child.getWidth()/2;
 			float y = child.getY() + child.getHeight()/2;
 			imageCenter.set(x, y);
+		}
+
+		private float rotation(MotionEvent event) {
+			double delta_x = (event.getX(0) - event.getX(1));
+			double delta_y = (event.getY(0) - event.getY(1));
+			double radians = Math.atan2(delta_y, delta_x);
+			return (float) Math.toDegrees(radians);
 		}
 	}
 }

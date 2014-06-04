@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
 <fullyQualifiedTypeName name="com.designproject.dreamcoding.activity.PuzzleActivity"/>
-<fullyQualifiedTypeName name="android.view.MotionEvent"/>
 <fullyQualifiedTypeName name="android.bluetooth.BluetoothClass.Device"/>
 <fullyQualifiedTypeName name="android.view.View.OnClickListener"/>
 <fullyQualifiedTypeName name="android.view.View.OnTouchListener"/>
@@ -12,7 +11,6 @@
 <fullyQualifiedTypeName name="android.content.Context"/>
 <fullyQualifiedTypeName name="android.graphics.PointF"/>
 <fullyQualifiedTypeName name="android.view.View.OnLayoutChangeListener"/>
-<fullyQualifiedTypeName name="android.graphics.Matrix"/>
 <fullyQualifiedTypeName name="com.designproject.dreamcoding.listener.PanAndZoomListener"/>
 <fullyQualifiedTypeName name="com.designproject.dreamcoding.listener.PanAndZoomListener.Anchor"/>
 <fullyQualifiedTypeName name="android.widget.RelativeLayout"/>
@@ -21,7 +19,6 @@
 <fullyQualifiedTypeName name="android.graphics.drawable.Drawable"/>
 <fullyQualifiedTypeName name="android.graphics.drawable.BitmapDrawable"/>
 <fullyQualifiedTypeName name="android.graphics.Bitmap"/>
-<fullyQualifiedTypeName name="com.designproject.dreamcoding.R.drawable"/>
 <fullyQualifiedTypeName name="android.widget.ImageView"/>
 <fullyQualifiedTypeName name="android.view.View"/>
 <fullyQualifiedTypeName name="android.util.Log"/>
@@ -32,4 +29,9 @@
 <fullyQualifiedTypeName name="android.widget.Toast"/>
 <fullyQualifiedTypeName name="android.R"/>
 <fullyQualifiedTypeName name="android.R.id"/>
+<fullyQualifiedTypeName name="android.view.MotionEvent"/>
+<fullyQualifiedTypeName name="com.designproject.dreamcoding.R"/>
+<fullyQualifiedTypeName name="android.graphics.Matrix"/>
+<fullyQualifiedTypeName name="com.designproject.dreamcoding.listener.testListener"/>
+<fullyQualifiedTypeName name="com.designproject.dreamcoding.R.drawable"/>
 </qualifiedTypeNameHistroy>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">DreamDrawing</string>
+    <string name="app_name">Daily Drawing</string>
     <string name="action_settings">Settings</string>
     <string name="singleplay">싱글 플레이</string>
     <string name="multiplay">멀티 플레이</string>
