@@ -292,7 +292,7 @@ public class PanAndZoomListener implements OnTouchListener {
 				lp.height = (int) (baseHeight * currentZoom);
 				lp.leftMargin = (int) Math.min(Math.max(0, imageCenter.x - lp.width/2), window.getWidth() - lp.width);
 				lp.topMargin = (int) Math.min(Math.max(0, imageCenter.y - lp.height/2), window.getHeight() - lp.height);
-
+				Log.i("window.getWidth() - lp.width , imageCenter.y - lp.height/2", (window.getWidth() - lp.width) + ", " + (imageCenter.y - lp.height/2));
 				child.setLayoutParams(lp);
 			}
 		}
@@ -302,7 +302,7 @@ public class PanAndZoomListener implements OnTouchListener {
 			Log.i("window width, height", window.getWidth() + ", " + window.getHeight());
 			float x  = child.getX() + child.getWidth()/2;
 			float y = child.getY() + child.getHeight()/2;
-			imageCenter.set(x, y);
+			imageCenter.set(x, y);	
 		}
 
 		private float rotation(MotionEvent event) {

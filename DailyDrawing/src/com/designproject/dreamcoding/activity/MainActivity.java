@@ -7,8 +7,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.designproject.dreamcoding.R;
 
 public class MainActivity extends DefaultActivity {
@@ -22,6 +24,7 @@ public class MainActivity extends DefaultActivity {
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); 
 		
 		mContext =  this;
+		mActionBar.setDisplayHomeAsUpEnabled(false);
 
 		Button singleButton = (Button) findViewById(R.id.button_single);
 		Button multiButton = (Button) findViewById(R.id.button_multi);
@@ -49,5 +52,20 @@ public class MainActivity extends DefaultActivity {
         getSupportMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
+    
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		switch(item.getItemId()){
+		case android.R.id.home:
+			break;
+		case 0:
+
+		default:
+			return false;
+		}
+
+		return true;
+	}
     
 }

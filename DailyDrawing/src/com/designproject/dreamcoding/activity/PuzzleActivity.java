@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.FrameLayout.LayoutParams;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
@@ -44,9 +45,13 @@ public class PuzzleActivity extends DefaultActivity {
 	private ImageView mFixedImage;
 	private Boolean isOrgView = false;
 	
+	private Button mResultButton;
+	private TextView mSize;
+	private TextView mLoc;
+	
 	private List<ImageView> imgPiece = new ArrayList<ImageView>();
 	private int[][] imgPieceData = {  //조각의 x좌표, y좌표, 너비, 높이, 각도 
-			{200,50,100,150,0},
+
 			//{150,150,100,150,30},
 	};
 	
@@ -69,11 +74,18 @@ public class PuzzleActivity extends DefaultActivity {
 		//setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE); 
 
 		mContext = this;
-		mActionBar.setDisplayHomeAsUpEnabled(true);
+		//mActionBar.setDisplayHomeAsUpEnabled(true);
 
 		imageViewHolder = (FrameLayout) findViewById(R.id.image_view_holder);
 		mOrgImage = (ImageView) findViewById(R.id.original);
 		mFixedImage = (ImageView) findViewById(R.id.fixedImage);
+		mResultButton = (Button) findViewById(R.id.getResult);
+		mLoc = (TextView) findViewById(R.id.locAccuracy);
+		mSize = (TextView) findViewById(R.id.sizeAccuracy);
+		
+		mLoc.setText("위치 정확도 : 88%");
+		mSize.setText("크기 정확도 : 3%");
+		mResultButton.setText("정답 제출하기?");
 
 		Drawable dr = getResources().getDrawable(R.drawable.original);
 		mOrgImage.setImageDrawable(dr);
@@ -103,13 +115,19 @@ public class PuzzleActivity extends DefaultActivity {
 //			ttemp.setImageBitmap(temp);
 //			ttemp.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT));
 //
-//			//TODO 매트릭스랑 뷰바운드 충돌일어남... 동시에 작동해주지 않음.
-//			/*
-//			 * TODO 
-//			 * 1.각 조각별 정확도 검증하여 실시간으로 보여주기
-//			 * 2.원본 이미지 숨김/보여주기 모드 설정
-//			 * 3.조각 회전 구현
-//			 */
+			//TODO 매트릭스랑 뷰바운드 충돌일어남... 동시에 작동해주지 않음.
+			/*
+			 * TODO 
+			 * 1.각 조각별 정확도 검증하여 실시간으로 보여주기
+			 * 2.원본 이미지 숨김/보여주기 모드 설정
+			 * 3.조각 회전 구현
+			 * 
+			 * 받아야 할 것 :
+			 * 1. 작은 그림으로 받기
+			 * 2. 각 조각별 정답 좌표
+			 * 3. 폰트
+			 * 4. 디자인
+			 */
 //			ttemp.setScaleType(ScaleType.MATRIX);
 //			ttemp.setAdjustViewBounds(true);
 //			ttemp.setOnTouchListener(new PanAndZoomListener(imageViewHolder, ttemp, Anchor.TOPLEFT));
@@ -119,12 +137,14 @@ public class PuzzleActivity extends DefaultActivity {
 //			
 //		}
 		
-		imageViewHolder.setOnTouchListener(new OnTouchListener() {
+		mOrgImage.setOnTouchListener(new OnTouchListener() {
 			
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				KLog("X, Y", event.getX() + ", " + event.getY());
-				actionbarMenu[3].setTitle("!");
+				KLog("left, top",mOrgImage.getX() + ", " + mOrgImage.getY());
+				KLog("width, height",mOrgImage.getWidth() + ", " + mOrgImage.getHeight());
+
 				return false;
 			}
 		});
@@ -167,18 +187,17 @@ public class PuzzleActivity extends DefaultActivity {
 
 		//actionbarMenu[4] = menu.addSubMenu(groupId, itemId, order, title)
 
-		actionbarMenu[1] = menu
-				.add(0, 1, 1, "100%")
-				.setIcon(R.drawable.puzzle_04);
-		actionbarMenu[1].setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-
-		actionbarMenu[2] = menu
-				.add(0, 2, 2, "00 : 00")
-				.setIcon(R.drawable.puzzle_05);
-		actionbarMenu[2].setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-
+//		actionbarMenu[1] = menu
+//				.add(0, 1, 1, "100%");
+//		actionbarMenu[1].setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS); //크기비례비율
+//
+//		actionbarMenu[2] = menu
+//				.add(0, 2, 2, "100%");
+//		actionbarMenu[2].setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS); //좌표정확도
+//
 		actionbarMenu[3] = menu
-				.add(0, 3, 3, "?");
+				//TODO 원본보기 버튼 누르면 원본 보기, 떼면 다시 퍼즐로 돌아오기
+				.add(0, 3, 3, "원본 보기");
 				//.setIcon(R.drawable.puzzle_06);
 		actionbarMenu[3].setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS );
 
@@ -196,15 +215,31 @@ public class PuzzleActivity extends DefaultActivity {
 			Toast.makeText(mContext, "MENU!", Toast.LENGTH_SHORT).show();
 			break;
 		case 1:
-			Toast.makeText(mContext, "타이머입니다!", Toast.LENGTH_SHORT).show();
+			Toast.makeText(mContext, "크기 정확도 : " + actionbarMenu[1].getTitle(), Toast.LENGTH_SHORT).show();
 			break;
+		case 2:
+			Toast.makeText(mContext, "좌표 정확도 : " + actionbarMenu[2].getTitle(), Toast.LENGTH_SHORT).show();
+			break;			
 		case 3:
 			if(isOrgView == true){
 				isOrgView = false;
 				mOrgImage.setVisibility(View.INVISIBLE);
+				
+				for(int i = 0; i < pieceList.length; i++){
+					imgPiece.get(i).setVisibility(View.VISIBLE);	
+				}
+				
+				actionbarMenu[3].setTitle("원본 보기");
+				
 			} else {
 				isOrgView = true;
 				mOrgImage.setVisibility(View.VISIBLE);
+				
+				for(int i = 0; i < pieceList.length; i++){
+					imgPiece.get(i).setVisibility(View.INVISIBLE);	
+				}
+				
+				actionbarMenu[3].setTitle("퍼즐 보기");
 			}
 			break;
 		default:
