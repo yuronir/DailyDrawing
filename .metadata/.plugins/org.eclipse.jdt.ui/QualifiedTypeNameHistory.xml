@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="com.designproject.dreamcoding.activity.PuzzleActivity"/>
 <fullyQualifiedTypeName name="android.bluetooth.BluetoothClass.Device"/>
-<fullyQualifiedTypeName name="android.view.View.OnClickListener"/>
 <fullyQualifiedTypeName name="android.widget.FrameLayout.LayoutParams"/>
 <fullyQualifiedTypeName name="android.view.ViewGroup.LayoutParams"/>
 <fullyQualifiedTypeName name="android.support.v4.view.MotionEventCompat"/>
@@ -14,7 +12,6 @@
 <fullyQualifiedTypeName name="com.designproject.dreamcoding.listener.PanAndZoomListener.Anchor"/>
 <fullyQualifiedTypeName name="android.widget.RelativeLayout"/>
 <fullyQualifiedTypeName name="android.widget.FrameLayout"/>
-<fullyQualifiedTypeName name="java.lang.Math"/>
 <fullyQualifiedTypeName name="android.graphics.drawable.BitmapDrawable"/>
 <fullyQualifiedTypeName name="android.view.View"/>
 <fullyQualifiedTypeName name="android.util.Log"/>
@@ -33,7 +30,12 @@
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="android.graphics.Bitmap"/>
 <fullyQualifiedTypeName name="android.widget.ImageView"/>
-<fullyQualifiedTypeName name="android.view.View.OnTouchListener"/>
 <fullyQualifiedTypeName name="android.graphics.drawable.Drawable"/>
 <fullyQualifiedTypeName name="com.designproject.dreamcoding.R.drawable"/>
+<fullyQualifiedTypeName name="android.widget.TextView"/>
+<fullyQualifiedTypeName name="android.widget.Button"/>
+<fullyQualifiedTypeName name="android.view.View.OnTouchListener"/>
+<fullyQualifiedTypeName name="android.view.View.OnClickListener"/>
+<fullyQualifiedTypeName name="com.designproject.dreamcoding.activity.PuzzleActivity"/>
+<fullyQualifiedTypeName name="java.lang.Math"/>
 </qualifiedTypeNameHistroy>

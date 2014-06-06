@@ -14,7 +14,7 @@
         android:id="@+id/imagearea"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="75"
+        android:layout_weight="65"
         android:background="@drawable/back" >
 
         <ImageView
@@ -40,31 +40,41 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="25"
+        android:layout_weight="35"
         android:background="@drawable/back" >
         <TextView
             android:id="@+id/sizeAccuracy"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="200dp"
             android:layout_alignParentLeft="true"
-            android:layout_toLeftOf="@+id/getResult"
+            android:layout_toLeftOf="@+id/viewOriginal"
             android:gravity="center"
             android:textSize="45sp" />
 
         <TextView
             android:id="@+id/locAccuracy"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_width="100dp"
+            android:layout_height="200dp"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/sizeAccuracy"
             android:layout_toLeftOf="@+id/getResult"
             android:gravity="center"
             android:textSize="45sp" />
 
+           <Button
+            android:id="@+id/viewOriginal"
+            android:layout_width="150dp"
+            android:layout_height="200dp"
+            android:text="원본 확인하기"
+            android:layout_alignParentRight="true"
+             />     
+        
         <Button
             android:id="@+id/getResult"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="150dp"
+            android:layout_height="200dp"
+            android:text="전체 정확도 확인"
+            android:layout_below="@+id/viewOriginal"
             android:layout_alignParentRight="true"
              />
     </RelativeLayout>

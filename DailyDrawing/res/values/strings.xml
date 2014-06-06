@@ -9,5 +9,4 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_puzzle">PuzzleActivity</string>
     <string name="imageload">이미지 불러오기</string>
-
 </resources>

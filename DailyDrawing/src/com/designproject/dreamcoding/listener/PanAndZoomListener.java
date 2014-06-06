@@ -1,5 +1,7 @@
 package com.designproject.dreamcoding.listener;
 
+import com.designproject.dreamcoding.activity.PuzzleActivity;
+
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
@@ -10,12 +12,10 @@ import android.util.FloatMath;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnLayoutChangeListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.FrameLayout.LayoutParams;
 
 public class PanAndZoomListener implements OnTouchListener {
 
@@ -44,8 +44,14 @@ public class PanAndZoomListener implements OnTouchListener {
 	int startY;
 	int imageX;
 	int imageY;
+	
+	//정확도 측정을 위한 변수
+	int pieceNum;
+	int[] pieceData;
 
-	public PanAndZoomListener(FrameLayout containter, View view, int anchor) {
+	public PanAndZoomListener(FrameLayout containter, View view, int pieceNum, int[] pieceData, int anchor) {
+		this.pieceNum = pieceNum;
+		this.pieceData = pieceData;
 		panZoomCalculator = new PanZoomCalculator(containter, view, anchor);
 	}
 
@@ -65,6 +71,10 @@ public class PanAndZoomListener implements OnTouchListener {
 			case MotionEvent.ACTION_DOWN:
 				startX = (int) event.getRawX();
 				startY = (int) event.getRawY();
+				
+				PuzzleActivity.mLoc.setText("위치 정확도 : " + PuzzleActivity.locAccuracy[pieceNum] + "%");
+				PuzzleActivity.mSize.setText("크기 정확도 : " + PuzzleActivity.sizeAccuracy[pieceNum] + "%");
+				
 				break;
 
 			case MotionEvent.ACTION_MOVE:
@@ -77,6 +87,13 @@ public class PanAndZoomListener implements OnTouchListener {
 				mParams.leftMargin = Math.min(Math.max(imageX - (startX -  x), 0), panZoomCalculator.window.getWidth() - mParams.width);
 				mParams.topMargin = Math.min(Math.max(imageY - (startY -  y), 0), panZoomCalculator.window.getHeight() - mParams.height);
 				//Math.min(Math.max(0, imageCenter.x - lp.width/2), window.getWidth() - lp.width);
+				
+				PuzzleActivity.locAccuracy[pieceNum] = 100 - Math.min(100, (int)((( Math.pow(mParams.leftMargin - pieceData[0], 2) + Math.pow(mParams.topMargin - pieceData[1], 2) )) / 500));
+				if(PuzzleActivity.locAccuracy[pieceNum] == 100 && Math.pow(mParams.leftMargin - pieceData[0], 2) + Math.pow(mParams.topMargin - pieceData[1], 2) > 10)
+					PuzzleActivity.locAccuracy[pieceNum] = 99;
+				
+				PuzzleActivity.mLoc.setText("위치 정확도 : " + PuzzleActivity.locAccuracy[pieceNum] + "%");
+				
 				panZoomCalculator.child.setLayoutParams(mParams);
 
 				break;
@@ -294,6 +311,11 @@ public class PanAndZoomListener implements OnTouchListener {
 				lp.topMargin = (int) Math.min(Math.max(0, imageCenter.y - lp.height/2), window.getHeight() - lp.height);
 				Log.i("window.getWidth() - lp.width , imageCenter.y - lp.height/2", (window.getWidth() - lp.width) + ", " + (imageCenter.y - lp.height/2));
 				child.setLayoutParams(lp);
+				
+				PuzzleActivity.sizeAccuracy[pieceNum] = 100 - Math.min(100, (int)(( Math.pow(lp.width - pieceData[2], 2) + Math.pow(lp.height - pieceData[3], 2) ) / 500));
+				if(PuzzleActivity.sizeAccuracy[pieceNum] == 100 && Math.pow(lp.width - pieceData[2], 2) + Math.pow(lp.height - pieceData[3], 2) > 10)
+					PuzzleActivity.sizeAccuracy[pieceNum] = 99;
+				PuzzleActivity.mSize.setText("크기 정확도 : " + PuzzleActivity.sizeAccuracy[pieceNum] + "%");
 			}
 		}
 

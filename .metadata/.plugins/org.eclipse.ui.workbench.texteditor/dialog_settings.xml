@@ -3,18 +3,19 @@
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item value="261" key="DIALOG_WIDTH"/>
 		<item value="236" key="DIALOG_Y_ORIGIN"/>
-		<item value="232" key="DIALOG_X_ORIGIN"/>
 		<item value="379" key="DIALOG_HEIGHT"/>
+		<item value="232" key="DIALOG_X_ORIGIN"/>
 		<item value="1|맑은 고딕|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|맑은 고딕" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="true" key="wrap"/>
-		<item value="false" key="casesensitive"/>
 		<item value="false" key="isRegEx"/>
+		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="" key="selection"/>
+		<item value="pieceList" key="selection"/>
 		<list key="findhistory">
+			<item value="pieceList"/>
 			<item value="submenu"/>
 			<item value="actionbarMenu[2]"/>
 			<item value="klog"/>
@@ -22,7 +23,6 @@
 			<item value="[imageId]"/>
 			<item value="mImageView"/>
 			<item value="baseWidth"/>
-			<item value="savedMatrix"/>
 		</list>
 		<list key="replacehistory">
 			<item value="imgPiece[0]"/>

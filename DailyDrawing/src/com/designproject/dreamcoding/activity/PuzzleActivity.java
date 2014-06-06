@@ -18,7 +18,9 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -45,13 +47,16 @@ public class PuzzleActivity extends DefaultActivity {
 	private ImageView mFixedImage;
 	private Boolean isOrgView = false;
 	
+	private Button mViewOriButton;
 	private Button mResultButton;
-	private TextView mSize;
-	private TextView mLoc;
+	public static TextView mSize;
+	public static TextView mLoc;
 	
 	private List<ImageView> imgPiece = new ArrayList<ImageView>();
-	private int[][] imgPieceData = {  //조각의 x좌표, y좌표, 너비, 높이, 각도 
-
+	public static int[][] imgPieceData = {  //조각의 x좌표, y좌표, 너비, 높이, 각도 
+			{106, 4, 651, 579},
+			{35, 70, 279, 571},
+			{145, 213, 110, 165}
 			//{150,150,100,150,30},
 	};
 	
@@ -60,6 +65,9 @@ public class PuzzleActivity extends DefaultActivity {
 			R.drawable.hair2,
 			R.drawable.eye,
 	};
+	
+	public static int[] sizeAccuracy;
+	public static int[] locAccuracy;
 
 	private MenuItem[] actionbarMenu = new MenuItem[6];
 
@@ -79,13 +87,16 @@ public class PuzzleActivity extends DefaultActivity {
 		imageViewHolder = (FrameLayout) findViewById(R.id.image_view_holder);
 		mOrgImage = (ImageView) findViewById(R.id.original);
 		mFixedImage = (ImageView) findViewById(R.id.fixedImage);
+		mViewOriButton = (Button) findViewById(R.id.viewOriginal);
 		mResultButton = (Button) findViewById(R.id.getResult);
 		mLoc = (TextView) findViewById(R.id.locAccuracy);
 		mSize = (TextView) findViewById(R.id.sizeAccuracy);
 		
-		mLoc.setText("위치 정확도 : 88%");
-		mSize.setText("크기 정확도 : 3%");
-		mResultButton.setText("정답 제출하기?");
+		mLoc.setText("위치 정확도 : ");
+		mSize.setText("크기 정확도 : ");
+		
+		sizeAccuracy = new int[pieceList.length];
+		locAccuracy = new int[pieceList.length];
 
 		Drawable dr = getResources().getDrawable(R.drawable.original);
 		mOrgImage.setImageDrawable(dr);
@@ -102,7 +113,14 @@ public class PuzzleActivity extends DefaultActivity {
 			
 			ttemp.setScaleType(ScaleType.MATRIX);
 			ttemp.setAdjustViewBounds(true);
-			ttemp.setOnTouchListener(new PanAndZoomListener(imageViewHolder, ttemp, Anchor.TOPLEFT));
+			ttemp.setOnTouchListener(new PanAndZoomListener(imageViewHolder, ttemp, i, imgPieceData[i], Anchor.TOPLEFT));
+			
+			//정답 좌표 확인을 위한 이동
+//			MarginLayoutParams lp = (MarginLayoutParams) ttemp.getLayoutParams();
+//			lp.leftMargin = imgPieceData[i][0];
+//			lp.topMargin = imgPieceData[i][1];
+//			ttemp.setLayoutParams(lp);
+			
 			//imgPiece[0].setOnTouchListener(new testListener());
 			imgPiece.add(ttemp);
 			imageViewHolder.addView(imgPiece.get(i));
@@ -119,12 +137,12 @@ public class PuzzleActivity extends DefaultActivity {
 			/*
 			 * TODO 
 			 * 1.각 조각별 정확도 검증하여 실시간으로 보여주기
-			 * 2.원본 이미지 숨김/보여주기 모드 설정
+			 * 2.원본 이미지 숨김/보여주기 모드 설정 O
 			 * 3.조각 회전 구현
 			 * 
 			 * 받아야 할 것 :
-			 * 1. 작은 그림으로 받기
-			 * 2. 각 조각별 정답 좌표
+			 * 1. 작은 그림으로 받기 O
+			 * 2. 각 조각별 정답 좌표 O
 			 * 3. 폰트
 			 * 4. 디자인
 			 */
@@ -146,6 +164,58 @@ public class PuzzleActivity extends DefaultActivity {
 				KLog("width, height",mOrgImage.getWidth() + ", " + mOrgImage.getHeight());
 
 				return false;
+			}
+		});
+		
+		mViewOriButton.setOnTouchListener(new OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				// TODO Auto-generated method stub
+				if(isOrgView == true){
+					isOrgView = false;
+					mOrgImage.setVisibility(View.INVISIBLE);
+					
+					for(int i = 0; i < pieceList.length; i++){
+						imgPiece.get(i).setVisibility(View.VISIBLE);	
+					}
+					
+					mViewOriButton.setText("원본 확인하기");
+					
+				} else {
+					isOrgView = true;
+					mOrgImage.setVisibility(View.VISIBLE);
+					
+					for(int i = 0; i < pieceList.length; i++){
+						imgPiece.get(i).setVisibility(View.INVISIBLE);	
+					}
+					
+					mViewOriButton.setText("퍼즐로 돌아가기");
+				}
+				
+				
+				return false;
+			}
+		});
+		
+		mResultButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				
+				int avgLoc = 0;
+				int avgSize = 0;
+				
+				for(int i = 0;i < pieceList.length; i++){
+					avgLoc += locAccuracy[i];
+					avgSize += sizeAccuracy[i];
+				}
+				avgLoc /= pieceList.length;
+				avgSize /= pieceList.length;
+				
+				mLoc.setText("전체 위치 정확도 : " + avgLoc + "%");
+				mSize.setText("전체 크기 정확도 : " + avgSize + "%");
 			}
 		});
 	}
