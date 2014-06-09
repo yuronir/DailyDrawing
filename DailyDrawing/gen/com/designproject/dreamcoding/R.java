@@ -974,22 +974,22 @@ containing a value of this type.
         public static final int button_toStory=0x7f04003c;
         public static final int disableHome=0x7f040009;
         public static final int edit_query=0x7f040026;
-        public static final int fixedImage=0x7f040035;
-        public static final int getResult=0x7f04003b;
+        public static final int fixedImage=0x7f040036;
+        public static final int getResult=0x7f04003a;
         public static final int homeAsUp=0x7f040006;
-        public static final int image_view_holder=0x7f040036;
+        public static final int image_view_holder=0x7f040037;
         public static final int imagearea=0x7f040034;
         public static final int listMode=0x7f040002;
-        public static final int locAccuracy=0x7f04003a;
+        public static final int locAccuracy=0x7f04003b;
         public static final int normal=0x7f040001;
-        public static final int original=0x7f040037;
+        public static final int original=0x7f040038;
         public static final int showCustom=0x7f040008;
         public static final int showHome=0x7f040005;
         public static final int showTitle=0x7f040007;
-        public static final int sizeAccuracy=0x7f040038;
+        public static final int sizeAccuracy=0x7f040039;
         public static final int tabMode=0x7f040003;
         public static final int useLogo=0x7f040004;
-        public static final int viewOriginal=0x7f040039;
+        public static final int viewOriginal=0x7f040035;
         public static final int wrap_content=0x7f040000;
     }
     public static final class integer {

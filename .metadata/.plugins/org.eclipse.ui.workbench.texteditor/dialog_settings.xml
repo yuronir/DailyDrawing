@@ -13,26 +13,26 @@
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="pieceList" key="selection"/>
+		<item value="mResultButton" key="selection"/>
 		<list key="findhistory">
-			<item value="pieceList"/>
-			<item value="submenu"/>
-			<item value="actionbarMenu[2]"/>
-			<item value="klog"/>
-			<item value="mOrgImage"/>
-			<item value="[imageId]"/>
-			<item value="mImageView"/>
-			<item value="baseWidth"/>
+			<item value="mResultButton"/>
+			<item value="imagearea"/>
+			<item value="locAccuracy[i]"/>
+			<item value="avgSize"/>
+			<item value="avgLoc"/>
+			<item value="PuzzleActivity.avgLoc"/>
+			<item value="pieceData"/>
+			<item value="PuzzleActivity.sizeAccuracy[pieceNum]"/>
 		</list>
 		<list key="replacehistory">
-			<item value="imgPiece[0]"/>
+			<item value="PuzzleActivity.locAccuracy[i]"/>
+			<item value="locAccuracy[i]"/>
+			<item value="PuzzleActivity.avgSize"/>
+			<item value="avgSize"/>
+			<item value="PuzzleActivity.avgLoc"/>
 			<item value=""/>
-			<item value="mOrgImage"/>
-			<item value="panZoomCalculator.child"/>
-			<item value="view.getId()"/>
-			<item value="KLog"/>
-			<item value="v.getId()"/>
-			<item value="imageView"/>
+			<item value="imgPieceData[i]"/>
+			<item value="sizeAccuracy[i]"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.GotoLineAction$GotoLineDialog_dialogBounds">

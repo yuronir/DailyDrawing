@@ -10,12 +10,20 @@
     android:weightSum="100"
     tools:context=".PuzzleActivity" >
 
-    <FrameLayout
+    <RelativeLayout
         android:id="@+id/imagearea"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="65"
         android:background="@drawable/back" >
+
+        <Button
+            android:id="@+id/viewOriginal"
+            android:layout_width="150dp"
+            android:layout_height="100dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:text="원본 확인하기" />
 
         <ImageView
             android:id="@+id/fixedImage"
@@ -32,22 +40,22 @@
         <ImageView
             android:id="@+id/original"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scaleType="fitCenter"
-            android:visibility="invisible" />
-    </FrameLayout>
+            android:layout_height="wrap_content"	
+            android:scaleType="fitCenter"/>
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="35"
         android:background="@drawable/back" >
+
         <TextView
             android:id="@+id/sizeAccuracy"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_alignParentLeft="true"
-            android:layout_toLeftOf="@+id/viewOriginal"
+            android:layout_toLeftOf="@+id/getResult"
             android:gravity="center"
             android:textSize="45sp" />
 
@@ -61,22 +69,12 @@
             android:gravity="center"
             android:textSize="45sp" />
 
-           <Button
-            android:id="@+id/viewOriginal"
-            android:layout_width="150dp"
-            android:layout_height="200dp"
-            android:text="원본 확인하기"
-            android:layout_alignParentRight="true"
-             />     
-        
         <Button
             android:id="@+id/getResult"
             android:layout_width="150dp"
-            android:layout_height="200dp"
-            android:text="전체 정확도 확인"
-            android:layout_below="@+id/viewOriginal"
+            android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-             />
+            android:text="데칼코마니 시작" />
     </RelativeLayout>
 
 </LinearLayout>
