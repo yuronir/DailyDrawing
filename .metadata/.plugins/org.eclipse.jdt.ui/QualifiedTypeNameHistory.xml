@@ -39,4 +39,5 @@
 <fullyQualifiedTypeName name="android.graphics.drawable.Drawable"/>
 <fullyQualifiedTypeName name="android.graphics.Matrix"/>
 <fullyQualifiedTypeName name="com.designproject.dreamcoding.activity.PuzzleActivity"/>
+<fullyQualifiedTypeName name="android.os.CountDownTimer"/>
 </qualifiedTypeNameHistroy>

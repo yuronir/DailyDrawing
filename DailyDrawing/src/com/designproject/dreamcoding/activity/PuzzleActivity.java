@@ -15,6 +15,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.provider.MediaStore;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -43,7 +44,7 @@ public class PuzzleActivity extends DefaultActivity {
 	private static int RESULT_LOAD_IMAGE = 1;
 	Context mContext;
 	Button buttonLoadImage;
-	FrameLayout imageViewHolder;
+	FrameLayout mImageViewHolder;
 
 	private ImageView mOrgImage;
 	private ImageView mFixedImage;
@@ -52,6 +53,7 @@ public class PuzzleActivity extends DefaultActivity {
 
 	private Button mViewOriButton;
 	private Button mResultButton;
+	private TextView mTimerArea;
 	public static TextView mSize;
 	public static TextView mLoc;
 
@@ -64,10 +66,14 @@ public class PuzzleActivity extends DefaultActivity {
 		//{150,150,100,150,30},
 	};
 
-	private int[] pieceList = {
+	private int[] mPieceList = {
 			R.drawable.hair1,
 			R.drawable.hair2,
 			R.drawable.eye,
+	};
+	
+	public static String[] mPiecePart = {
+			"머리", "앞머리", "눈"
 	};
 
 	public static int[] sizeAccuracy;
@@ -75,6 +81,9 @@ public class PuzzleActivity extends DefaultActivity {
 	public static int avgLoc = 0;
 	public static int avgSize = 0;
 	
+	private double timelimit = 60.0;
+	private String format = "#.#";
+	private java.text.DecimalFormat df = new java.text.DecimalFormat(format);
 
 	private MenuItem[] actionbarMenu = new MenuItem[6];
 
@@ -91,19 +100,21 @@ public class PuzzleActivity extends DefaultActivity {
 		mContext = this;
 		//mActionBar.setDisplayHomeAsUpEnabled(true);
 
-		imageViewHolder = (FrameLayout) findViewById(R.id.image_view_holder);
+		mImageViewHolder = (FrameLayout) findViewById(R.id.image_view_holder);
 		mOrgImage = (ImageView) findViewById(R.id.original);
 		mFixedImage = (ImageView) findViewById(R.id.fixedImage);
 		mViewOriButton = (Button) findViewById(R.id.viewOriginal);
 		mResultButton = (Button) findViewById(R.id.getResult);
+		mTimerArea = (TextView) findViewById(R.id.timerArea);
 		mLoc = (TextView) findViewById(R.id.locAccuracy);
 		mSize = (TextView) findViewById(R.id.sizeAccuracy);
 
+		mTimerArea.setText("제한시간 : 60초");
 		mLoc.setText("현재 보이는 것이 원본입니다.");
 		mSize.setText("주어진 조각으로 원본을 복원하세요!");
 
-		sizeAccuracy = new int[pieceList.length];
-		locAccuracy = new int[pieceList.length];
+		sizeAccuracy = new int[mPieceList.length];
+		locAccuracy = new int[mPieceList.length];
 
 		Drawable dr = getResources().getDrawable(R.drawable.original);
 		mOrgImage.setImageDrawable(dr);
@@ -111,23 +122,23 @@ public class PuzzleActivity extends DefaultActivity {
 		dr = getResources().getDrawable(R.drawable.cloth);
 		mFixedImage.setImageDrawable(dr);
 
-		for(int i = 0; i < pieceList.length; i++){
+		for(int i = 0; i < mPieceList.length; i++){
 			double ratio = (random.nextDouble()*0.3) + 0.7; //0.7~1 사이의 랜덤 크기로 리사이징
 			int locX = random.nextInt(100);							//0~100 사이의 랜덤 좌표에 투척
 			int locY = random.nextInt(100);
 			ImageView temp = new ImageView(this);
-			Bitmap piece = BitmapFactory.decodeResource(mContext.getResources(), pieceList[i]);
+			Bitmap piece = BitmapFactory.decodeResource(mContext.getResources(), mPieceList[i]);
 			Bitmap resizedPiece = Bitmap.createScaledBitmap(piece, (int)(piece.getWidth()*ratio), (int)(piece.getHeight()*ratio), false);
 
 			temp.setImageBitmap(resizedPiece);
 			temp.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT));		
-
+			temp.setVisibility(View.INVISIBLE);
 			temp.setScaleType(ScaleType.MATRIX);
 			temp.setAdjustViewBounds(true);
-			temp.setOnTouchListener(new PanAndZoomListener(imageViewHolder, temp, i, imgPieceData[i], Anchor.TOPLEFT));
+			temp.setOnTouchListener(new PanAndZoomListener(mImageViewHolder, temp, i, imgPieceData[i], Anchor.TOPLEFT));
 			
-			sizeAccuracy[i] = 100 - Math.min(100, (int)(( Math.pow(piece.getWidth()*ratio - imgPieceData[i][2], 2) + Math.pow(piece.getHeight()*ratio - imgPieceData[i][3], 2) ) / 200));
-			if(sizeAccuracy[i] == 100 && Math.pow(piece.getWidth()*ratio - imgPieceData[i][2], 2) + Math.pow(piece.getHeight()*ratio - imgPieceData[i][3], 2) > 30)
+			sizeAccuracy[i] = 100 - Math.min(100, (int)(( Math.pow(piece.getWidth()*ratio - imgPieceData[i][2], 2) + Math.pow(piece.getHeight()*ratio - imgPieceData[i][3], 2) ) / 30));
+			if(sizeAccuracy[i] == 100 && Math.pow(piece.getWidth()*ratio - imgPieceData[i][2], 2) + Math.pow(piece.getHeight()*ratio - imgPieceData[i][3], 2) > 10)
 				sizeAccuracy[i] = 99;
 
 			//			정답 좌표 확인을 위한 이동
@@ -138,7 +149,7 @@ public class PuzzleActivity extends DefaultActivity {
 
 			//imgPiece[0].setOnTouchListener(new testListener());
 			imgPiece.add(temp);
-			imageViewHolder.addView(imgPiece.get(i));
+			mImageViewHolder.addView(imgPiece.get(i));
 		}
 
 		//		for(int i = 0; i < imgPieceData.length; i ++){
@@ -192,7 +203,7 @@ public class PuzzleActivity extends DefaultActivity {
 				case MotionEvent.ACTION_DOWN:
 
 					mOrgImage.setVisibility(View.VISIBLE);
-					for(int i = 0; i < pieceList.length; i++){
+					for(int i = 0; i < mPieceList.length; i++){
 						imgPiece.get(i).setVisibility(View.INVISIBLE);	
 					}
 
@@ -201,7 +212,7 @@ public class PuzzleActivity extends DefaultActivity {
 				case MotionEvent.ACTION_UP:
 
 					mOrgImage.setVisibility(View.INVISIBLE);
-					for(int i = 0; i < pieceList.length; i++){
+					for(int i = 0; i < mPieceList.length; i++){
 						imgPiece.get(i).setVisibility(View.VISIBLE);	
 					}
 
@@ -239,8 +250,17 @@ public class PuzzleActivity extends DefaultActivity {
 			@Override
 			public void onClick(View v) {
 				
+				//처음 데칼코마니를 시작할 때 작동되는 부분(스타트 버튼)
 				if(isStart != true){
+					mSize.setText("데칼코마니 진행 중...");
+					mLoc.setText("현재 선택된 곳 : ");
+					mResultButton.setText("현재 진척도 보기");
+					mViewOriButton.setVisibility(View.VISIBLE);
 					mOrgImage.setVisibility(View.INVISIBLE);
+					timer.start();
+					for(int i = 0; i < mPieceList.length; i++){
+						imgPiece.get(i).setVisibility(View.VISIBLE);	
+					}
 					isStart = true;
 					return;
 				}
@@ -248,12 +268,13 @@ public class PuzzleActivity extends DefaultActivity {
 				avgLoc = 0;
 				avgSize = 0;
 				
-				for(int i = 0;i < pieceList.length; i++){
+				for(int i = 0;i < mPieceList.length; i++){
 					avgLoc += locAccuracy[i];
 					avgSize += sizeAccuracy[i];
 				}
-				avgLoc /= pieceList.length;
-				avgSize /= pieceList.length;
+				
+				avgLoc /= mPieceList.length;
+				avgSize /= mPieceList.length;
 
 				mSize.setText("전체 크기 정확도 : " + avgSize + "%");
 				mLoc.setText("전체 위치 정확도 : " + avgLoc + "%");
@@ -379,4 +400,19 @@ public class PuzzleActivity extends DefaultActivity {
 
 		return result;
 	}
+	
+	CountDownTimer timer = new CountDownTimer(60*1000, 100) {
+		
+		@Override
+		public void onTick(long millisUntilFinished) {
+			timelimit = timelimit - 0.1;
+			mTimerArea.setText("남은 시간 : " + df.format(timelimit) + "초");
+		}
+		
+		@Override
+		public void onFinish() {
+			// TODO Auto-generated method stub
+			mTimerArea.setText("Time Over!");
+		}
+	};
 }

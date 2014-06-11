@@ -17,14 +17,6 @@
         android:layout_weight="65"
         android:background="@drawable/back" >
 
-        <Button
-            android:id="@+id/viewOriginal"
-            android:layout_width="150dp"
-            android:layout_height="100dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:text="원본 확인하기" />
-
         <ImageView
             android:id="@+id/fixedImage"
             android:layout_width="wrap_content"
@@ -42,6 +34,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"	
             android:scaleType="fitCenter"/>
+        
+        <Button
+            android:id="@+id/viewOriginal"
+            android:layout_width="120dp"
+            android:layout_height="80dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:visibility="invisible"
+            android:text="원본 확인하기" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -49,25 +50,35 @@
         android:layout_height="0dp"
         android:layout_weight="35"
         android:background="@drawable/back" >
+        
+        <TextView
+            android:id="@+id/timerArea"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/getResult"
+            android:gravity="center"
+            android:textSize="30sp" />
 
         <TextView
             android:id="@+id/sizeAccuracy"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="150dp"
             android:layout_alignParentLeft="true"
+            android:layout_below="@+id/timerArea"
             android:layout_toLeftOf="@+id/getResult"
             android:gravity="center"
-            android:textSize="45sp" />
+            android:textSize="40sp" />
 
         <TextView
             android:id="@+id/locAccuracy"
             android:layout_width="100dp"
-            android:layout_height="200dp"
+            android:layout_height="150dp"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/sizeAccuracy"
             android:layout_toLeftOf="@+id/getResult"
             android:gravity="center"
-            android:textSize="45sp" />
+            android:textSize="40sp" />
 
         <Button
             android:id="@+id/getResult"
