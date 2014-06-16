@@ -85,7 +85,7 @@
             android:layout_width="150dp"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:text="데칼코마니 시작" />
+            android:text="@string/startDecal" />
     </RelativeLayout>
 
 </LinearLayout>

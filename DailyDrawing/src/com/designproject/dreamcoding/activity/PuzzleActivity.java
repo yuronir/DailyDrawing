@@ -49,6 +49,7 @@ public class PuzzleActivity extends DefaultActivity {
 	private ImageView mOrgImage;
 	private ImageView mFixedImage;
 	private Boolean isStart = false;
+	private Boolean isTimeOver = false;
 	private Boolean isOrgView = false;
 
 	private Button mViewOriButton;
@@ -66,21 +67,29 @@ public class PuzzleActivity extends DefaultActivity {
 		//{150,150,100,150,30},
 	};
 
-	private int[] mPieceList = {
-			R.drawable.hair1,
-			R.drawable.hair2,
-			R.drawable.eye,
+	private int[][] mPieceList = {
+			{
+				R.drawable.hair1,
+				R.drawable.hair2,
+				R.drawable.eye
+			},
+			{R.drawable.hair1_green,
+				R.drawable.hair2_green,
+				R.drawable.eye_green
+			}
 	};
 	
+	public static Bitmap[][] mPieceBitmap;
+
 	public static String[] mPiecePart = {
-			"머리", "앞머리", "눈"
+		"머리", "앞머리", "눈"
 	};
 
 	public static int[] sizeAccuracy;
 	public static int[] locAccuracy;
 	public static int avgLoc = 0;
 	public static int avgSize = 0;
-	
+
 	private double timelimit = 60.0;
 	private String format = "#.#";
 	private java.text.DecimalFormat df = new java.text.DecimalFormat(format);
@@ -109,12 +118,13 @@ public class PuzzleActivity extends DefaultActivity {
 		mLoc = (TextView) findViewById(R.id.locAccuracy);
 		mSize = (TextView) findViewById(R.id.sizeAccuracy);
 
-		mTimerArea.setText("제한시간 : 60초");
+		mTimerArea.setText("제한시간 : " + (int)timelimit  + "초");
 		mLoc.setText("현재 보이는 것이 원본입니다.");
 		mSize.setText("주어진 조각으로 원본을 복원하세요!");
 
-		sizeAccuracy = new int[mPieceList.length];
-		locAccuracy = new int[mPieceList.length];
+		mPieceBitmap = new Bitmap[2][imgPieceData.length];
+		sizeAccuracy = new int[imgPieceData.length];
+		locAccuracy = new int[imgPieceData.length];
 
 		Drawable dr = getResources().getDrawable(R.drawable.original);
 		mOrgImage.setImageDrawable(dr);
@@ -122,21 +132,27 @@ public class PuzzleActivity extends DefaultActivity {
 		dr = getResources().getDrawable(R.drawable.cloth);
 		mFixedImage.setImageDrawable(dr);
 
-		for(int i = 0; i < mPieceList.length; i++){
+		for(int i = 0; i < imgPieceData.length; i++){
 			double ratio = (random.nextDouble()*0.3) + 0.7; //0.7~1 사이의 랜덤 크기로 리사이징
 			int locX = random.nextInt(100);							//0~100 사이의 랜덤 좌표에 투척
 			int locY = random.nextInt(100);
 			ImageView temp = new ImageView(this);
-			Bitmap piece = BitmapFactory.decodeResource(mContext.getResources(), mPieceList[i]);
+			//검정 이미지 리사이즈하여 저장
+			Bitmap piece = BitmapFactory.decodeResource(mContext.getResources(), mPieceList[0][i]);
 			Bitmap resizedPiece = Bitmap.createScaledBitmap(piece, (int)(piece.getWidth()*ratio), (int)(piece.getHeight()*ratio), false);
-
-			temp.setImageBitmap(resizedPiece);
+			mPieceBitmap[0][i] = resizedPiece;
+			//초록(선택되었을 때) 이미지 리사이즈하여 저장
+			piece = BitmapFactory.decodeResource(mContext.getResources(), mPieceList[1][i]);
+			resizedPiece = Bitmap.createScaledBitmap(piece, (int)(piece.getWidth()*ratio), (int)(piece.getHeight()*ratio), false);
+			mPieceBitmap[1][i] = resizedPiece;
+			
+			temp.setImageBitmap(mPieceBitmap[0][i]);
 			temp.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT));		
 			temp.setVisibility(View.INVISIBLE);
 			temp.setScaleType(ScaleType.MATRIX);
 			temp.setAdjustViewBounds(true);
 			temp.setOnTouchListener(new PanAndZoomListener(mImageViewHolder, temp, i, imgPieceData[i], Anchor.TOPLEFT));
-			
+
 			sizeAccuracy[i] = 100 - Math.min(100, (int)(( Math.pow(piece.getWidth()*ratio - imgPieceData[i][2], 2) + Math.pow(piece.getHeight()*ratio - imgPieceData[i][3], 2) ) / 30));
 			if(sizeAccuracy[i] == 100 && Math.pow(piece.getWidth()*ratio - imgPieceData[i][2], 2) + Math.pow(piece.getHeight()*ratio - imgPieceData[i][3], 2) > 10)
 				sizeAccuracy[i] = 99;
@@ -203,7 +219,7 @@ public class PuzzleActivity extends DefaultActivity {
 				case MotionEvent.ACTION_DOWN:
 
 					mOrgImage.setVisibility(View.VISIBLE);
-					for(int i = 0; i < mPieceList.length; i++){
+					for(int i = 0; i < imgPieceData.length; i++){
 						imgPiece.get(i).setVisibility(View.INVISIBLE);	
 					}
 
@@ -212,7 +228,7 @@ public class PuzzleActivity extends DefaultActivity {
 				case MotionEvent.ACTION_UP:
 
 					mOrgImage.setVisibility(View.INVISIBLE);
-					for(int i = 0; i < mPieceList.length; i++){
+					for(int i = 0; i < imgPieceData.length; i++){
 						imgPiece.get(i).setVisibility(View.VISIBLE);	
 					}
 
@@ -249,7 +265,7 @@ public class PuzzleActivity extends DefaultActivity {
 
 			@Override
 			public void onClick(View v) {
-				
+
 				//처음 데칼코마니를 시작할 때 작동되는 부분(스타트 버튼)
 				if(isStart != true){
 					mSize.setText("데칼코마니 진행 중...");
@@ -258,27 +274,33 @@ public class PuzzleActivity extends DefaultActivity {
 					mViewOriButton.setVisibility(View.VISIBLE);
 					mOrgImage.setVisibility(View.INVISIBLE);
 					timer.start();
-					for(int i = 0; i < mPieceList.length; i++){
+					for(int i = 0; i < imgPieceData.length; i++){
 						imgPiece.get(i).setVisibility(View.VISIBLE);	
 					}
 					isStart = true;
 					return;
 				}
+				
+				if(isTimeOver == true){
+					isTimeOver = false;
+					restart();
+					return;
+				}
 
 				avgLoc = 0;
 				avgSize = 0;
-				
-				for(int i = 0;i < mPieceList.length; i++){
+
+				for(int i = 0;i < imgPieceData.length; i++){
 					avgLoc += locAccuracy[i];
 					avgSize += sizeAccuracy[i];
 				}
-				
-				avgLoc /= mPieceList.length;
-				avgSize /= mPieceList.length;
+
+				avgLoc /= imgPieceData.length;
+				avgSize /= imgPieceData.length;
 
 				mSize.setText("전체 크기 정확도 : " + avgSize + "%");
 				mLoc.setText("전체 위치 정확도 : " + avgLoc + "%");
-				
+
 				if(avgLoc == 100 && avgSize == 100){
 					mSize.setText("축하합니다!");
 					mLoc.setText("데칼코마니가 완성되었습니다!");				
@@ -400,19 +422,97 @@ public class PuzzleActivity extends DefaultActivity {
 
 		return result;
 	}
-	
-	CountDownTimer timer = new CountDownTimer(60*1000, 100) {
-		
+
+	CountDownTimer timer = new CountDownTimer((long) (timelimit*1000), 100) {
+
 		@Override
 		public void onTick(long millisUntilFinished) {
 			timelimit = timelimit - 0.1;
 			mTimerArea.setText("남은 시간 : " + df.format(timelimit) + "초");
 		}
-		
+
 		@Override
 		public void onFinish() {
-			// TODO Auto-generated method stub
+			isTimeOver = true;
 			mTimerArea.setText("Time Over!");
+			mResultButton.setText("다시 시작하기");
+
+			for(int i = 0; i < imgPiece.size(); i++){
+				ImageView v = imgPiece.get(i);
+				v.setImageBitmap(mPieceBitmap[1][i]);
+				v.setOnTouchListener(new OnTouchListener() {
+
+					@Override
+					public boolean onTouch(View v, MotionEvent event) {
+						return true;
+					}
+				});
+			}
+
+			mOrgImage.setVisibility(View.VISIBLE);
+			//mViewOriButton.setVisibility(View.INVISIBLE);
+
+			avgLoc = 0;
+			avgSize = 0;
+
+			for(int i = 0;i < imgPieceData.length; i++){
+				avgLoc += locAccuracy[i];
+				avgSize += sizeAccuracy[i];
+			}
+
+			avgLoc /= imgPieceData.length;
+			avgSize /= imgPieceData.length;
+
+			mSize.setText("전체 크기 정확도 : " + avgSize + "%");
+			mLoc.setText("전체 위치 정확도 : " + avgLoc + "%");
 		}
 	};
+	
+	public void restart(){
+		
+		isStart = false;
+		timelimit = 60.0;
+		imgPiece.clear();
+		mImageViewHolder.removeAllViews();
+		mResultButton.setText(getString(R.string.startDecal));
+		mTimerArea.setText("제한시간 : " + (int)timelimit  + "초");
+		mLoc.setText("현재 보이는 것이 원본입니다.");
+		mSize.setText("주어진 조각으로 원본을 복원하세요!");
+		
+		for(int i = 0; i < imgPieceData.length; i++){
+			double ratio = (random.nextDouble()*0.3) + 0.7; //0.7~1 사이의 랜덤 크기로 리사이징
+			int locX = random.nextInt(100);							//0~100 사이의 랜덤 좌표에 투척
+			int locY = random.nextInt(100);
+			ImageView temp = new ImageView(this);
+			//검정 이미지 리사이즈하여 저장
+			Bitmap piece = BitmapFactory.decodeResource(mContext.getResources(), mPieceList[0][i]);
+			Bitmap resizedPiece = Bitmap.createScaledBitmap(piece, (int)(piece.getWidth()*ratio), (int)(piece.getHeight()*ratio), false);
+			mPieceBitmap[0][i] = resizedPiece;
+			//초록(선택되었을 때) 이미지 리사이즈하여 저장
+			piece = BitmapFactory.decodeResource(mContext.getResources(), mPieceList[1][i]);
+			resizedPiece = Bitmap.createScaledBitmap(piece, (int)(piece.getWidth()*ratio), (int)(piece.getHeight()*ratio), false);
+			mPieceBitmap[1][i] = resizedPiece;
+			
+			temp.setImageBitmap(mPieceBitmap[0][i]);
+			temp.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT));		
+			temp.setVisibility(View.INVISIBLE);
+			temp.setScaleType(ScaleType.MATRIX);
+			temp.setAdjustViewBounds(true);
+			temp.setOnTouchListener(new PanAndZoomListener(mImageViewHolder, temp, i, imgPieceData[i], Anchor.TOPLEFT));
+
+			sizeAccuracy[i] = 100 - Math.min(100, (int)(( Math.pow(piece.getWidth()*ratio - imgPieceData[i][2], 2) + Math.pow(piece.getHeight()*ratio - imgPieceData[i][3], 2) ) / 30));
+			if(sizeAccuracy[i] == 100 && Math.pow(piece.getWidth()*ratio - imgPieceData[i][2], 2) + Math.pow(piece.getHeight()*ratio - imgPieceData[i][3], 2) > 10)
+				sizeAccuracy[i] = 99;
+
+			//			정답 좌표 확인을 위한 이동
+			MarginLayoutParams lp = (MarginLayoutParams) temp.getLayoutParams();
+			lp.leftMargin = locX;
+			lp.topMargin = locY;
+			temp.setLayoutParams(lp);
+
+			//imgPiece[0].setOnTouchListener(new testListener());
+			imgPiece.add(temp);
+			mImageViewHolder.addView(imgPiece.get(i));
+		}
+	}
 }

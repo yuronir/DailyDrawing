@@ -915,18 +915,21 @@ containing a value of this type.
         public static final int back=0x7f020070;
         public static final int cloth=0x7f020071;
         public static final int eye=0x7f020072;
-        public static final int hair1=0x7f020073;
-        public static final int hair2=0x7f020074;
-        public static final int ic_launcher=0x7f020075;
-        public static final int mr_brown=0x7f020076;
-        public static final int original=0x7f020077;
-        public static final int puzzle_01=0x7f020078;
-        public static final int puzzle_02=0x7f020079;
-        public static final int puzzle_03=0x7f02007a;
-        public static final int puzzle_04=0x7f02007b;
-        public static final int puzzle_05=0x7f02007c;
-        public static final int puzzle_06=0x7f02007d;
-        public static final int puzzle_07=0x7f02007e;
+        public static final int eye_green=0x7f020073;
+        public static final int hair1=0x7f020074;
+        public static final int hair1_green=0x7f020075;
+        public static final int hair2=0x7f020076;
+        public static final int hair2_green=0x7f020077;
+        public static final int ic_launcher=0x7f020078;
+        public static final int mr_brown=0x7f020079;
+        public static final int original=0x7f02007a;
+        public static final int puzzle_01=0x7f02007b;
+        public static final int puzzle_02=0x7f02007c;
+        public static final int puzzle_03=0x7f02007d;
+        public static final int puzzle_04=0x7f02007e;
+        public static final int puzzle_05=0x7f02007f;
+        public static final int puzzle_06=0x7f020080;
+        public static final int puzzle_07=0x7f020081;
     }
     public static final class id {
         public static final int abs__action_bar=0x7f040020;
@@ -1077,6 +1080,7 @@ containing a value of this type.
         public static final int imageload=0x7f090014;
         public static final int multiplay=0x7f090010;
         public static final int singleplay=0x7f09000f;
+        public static final int startDecal=0x7f090015;
         public static final int storymode=0x7f090011;
         public static final int title_activity_puzzle=0x7f090013;
     }

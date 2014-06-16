@@ -13,26 +13,26 @@
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="mResultButton" key="selection"/>
+		<item value="" key="selection"/>
 		<list key="findhistory">
+			<item value="mpiecelist"/>
+			<item value="mPieceList.length"/>
+			<item value="mPieceList"/>
+			<item value="imgPieceData"/>
+			<item value="imgPiece"/>
 			<item value="mResultButton"/>
 			<item value="imagearea"/>
 			<item value="locAccuracy[i]"/>
-			<item value="avgSize"/>
-			<item value="avgLoc"/>
-			<item value="PuzzleActivity.avgLoc"/>
-			<item value="pieceData"/>
-			<item value="PuzzleActivity.sizeAccuracy[pieceNum]"/>
 		</list>
 		<list key="replacehistory">
+			<item value="imgPieceData.length"/>
+			<item value="mPieceList.length"/>
 			<item value="PuzzleActivity.locAccuracy[i]"/>
 			<item value="locAccuracy[i]"/>
 			<item value="PuzzleActivity.avgSize"/>
 			<item value="avgSize"/>
 			<item value="PuzzleActivity.avgLoc"/>
 			<item value=""/>
-			<item value="imgPieceData[i]"/>
-			<item value="sizeAccuracy[i]"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.GotoLineAction$GotoLineDialog_dialogBounds">
