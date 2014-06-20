@@ -473,6 +473,7 @@ public class PuzzleActivity extends DefaultActivity {
 		isStart = false;
 		timelimit = 60.0;
 		imgPiece.clear();
+		mOrgImage.setVisibility(View.VISIBLE);
 		mImageViewHolder.removeAllViews();
 		mResultButton.setText(getString(R.string.startDecal));
 		mTimerArea.setText("제한시간 : " + (int)timelimit  + "초");

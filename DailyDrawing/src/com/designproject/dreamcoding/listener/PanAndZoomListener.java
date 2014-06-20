@@ -74,7 +74,7 @@ public class PanAndZoomListener implements OnTouchListener {
 				
 				PuzzleActivity.mSize.setText("데칼코마니 진행 중...");
 				PuzzleActivity.mLoc.setText("현재 선택된 곳 : " + PuzzleActivity.mPiecePart[pieceNum]);
-				((ImageView)v).setImageBitmap(PuzzleActivity.mPieceBitmap[1][pieceNum]);
+				((ImageView)v).setImageBitmap(PuzzleActivity.mPieceBitmap[1][pieceNum]); 
 
 //				PuzzleActivity.mLoc.setText("위치 정확도 : " + PuzzleActivity.locAccuracy[pieceNum] + "%");
 //				PuzzleActivity.mSize.setText("크기 정확도 : " + PuzzleActivity.sizeAccuracy[pieceNum] + "%");
