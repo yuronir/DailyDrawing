@@ -168,37 +168,6 @@ public class PuzzleActivity extends DefaultActivity {
 			mImageViewHolder.addView(imgPiece.get(i));
 		}
 
-		//		for(int i = 0; i < imgPieceData.length; i ++){
-		//			
-		//			Bitmap temp = crop(R.drawable.mr_brown, imgPieceData[i][0], imgPieceData[i][1], imgPieceData[i][2], imgPieceData[i][3]);
-		//			ImageView ttemp = new ImageView(this);
-		//			ttemp.setImageBitmap(temp);
-		//			ttemp.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT));
-		//
-		//TODO 매트릭스랑 뷰바운드 충돌일어남... 동시에 작동해주지 않음.
-		/*
-		 * TODO 
-		 * 1.각 조각별 정확도 검증하여 실시간으로 보여주기 O
-		 * 2.원본 이미지 숨김/보여주기 모드 설정 O
-		 * 3.조각 회전 구현
-		 * 4.랜덤 사이즈 이미지 깨짐 해결
-		 * 5.크기 리사이징 전엔 퍼센트 제대로 구현되지 않음
-		 * 
-		 * 받아야 할 것 :
-		 * 1. 작은 그림으로 받기 O
-		 * 2. 각 조각별 정답 좌표 O
-		 * 3. 폰트
-		 * 4. 디자인
-		 */
-		//			ttemp.setScaleType(ScaleType.MATRIX);
-		//			ttemp.setAdjustViewBounds(true);
-		//			ttemp.setOnTouchListener(new PanAndZoomListener(imageViewHolder, ttemp, Anchor.TOPLEFT));
-		//			//imgPiece[0].setOnTouchListener(new testListener());
-		//			imgPiece.add(ttemp);
-		//			imageViewHolder.addView(imgPiece.get(i));
-		//			
-		//		}
-
 		mOrgImage.setOnTouchListener(new OnTouchListener() {
 
 			@Override
@@ -234,28 +203,6 @@ public class PuzzleActivity extends DefaultActivity {
 
 					break;
 				}
-
-				//				if(isOrgView == true){
-				//					isOrgView = false;
-				//					mOrgImage.setVisibility(View.INVISIBLE);
-				//
-				//					for(int i = 0; i < pieceList.length; i++){
-				//						imgPiece.get(i).setVisibility(View.VISIBLE);	
-				//					}
-				//
-				//					mViewOriButton.setText("원본 확인하기");
-				//
-				//				} else {
-				//					isOrgView = true;
-				//					mOrgImage.setVisibility(View.VISIBLE);
-				//
-				//					for(int i = 0; i < pieceList.length; i++){
-				//						imgPiece.get(i).setVisibility(View.INVISIBLE);	
-				//					}
-				//
-				//					mViewOriButton.setText("퍼즐로 돌아가기");
-				//				}
-
 
 				return false;
 			}
@@ -308,105 +255,6 @@ public class PuzzleActivity extends DefaultActivity {
 			}
 		});
 	}
-
-	@SuppressLint("NewApi")
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-
-		//이미지 주소 받아서 추가
-		if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
-			Uri selectedImage = data.getData();
-			String[] filePathColumn = { MediaStore.Images.Media.DATA };
-
-			DisplayMetrics metrics = new DisplayMetrics();
-			getWindowManager().getDefaultDisplay().getMetrics(metrics);
-
-			//기기의 가로세로 픽셀
-			final int width = metrics.widthPixels;
-			final int height = metrics.heightPixels;
-
-			Cursor cursor = getContentResolver().query(selectedImage,
-					filePathColumn, null, null, null);
-			cursor.moveToFirst();
-
-			int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-			String picturePath = cursor.getString(columnIndex);
-			cursor.close();
-		}
-	}
-
-	//	@Override
-	//	public boolean onCreateOptionsMenu(Menu menu) {
-	//		// Inflate the menu; this adds items to the action bar if it is present.
-	//		actionbarMenu[0] = menu
-	//				.add(0, 0, 0, "MENU")
-	//				.setIcon(R.drawable.puzzle_03);
-	//		actionbarMenu[0].setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-	//
-	//		//actionbarMenu[4] = menu.addSubMenu(groupId, itemId, order, title)
-	//
-	//		//		actionbarMenu[1] = menu
-	//		//				.add(0, 1, 1, "100%");
-	//		//		actionbarMenu[1].setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS); //크기비례비율
-	//		//
-	//		//		actionbarMenu[2] = menu
-	//		//				.add(0, 2, 2, "100%");
-	//		//		actionbarMenu[2].setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS); //좌표정확도
-	//		//
-	//		actionbarMenu[3] = menu
-	//				//TODO 원본보기 버튼 누르면 원본 보기, 떼면 다시 퍼즐로 돌아오기
-	//				.add(0, 3, 3, "원본 보기");
-	//		//.setIcon(R.drawable.puzzle_06);
-	//		actionbarMenu[3].setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS );
-	//
-	//		return true;
-	//	}
-	//
-	//	@Override
-	//	public boolean onOptionsItemSelected(MenuItem item) {
-	//
-	//		switch(item.getItemId()){
-	//		case android.R.id.home:
-	//			finish();
-	//			break;
-	//		case 0:
-	//			Toast.makeText(mContext, "MENU!", Toast.LENGTH_SHORT).show();
-	//			break;
-	//		case 1:
-	//			Toast.makeText(mContext, "크기 정확도 : " + actionbarMenu[1].getTitle(), Toast.LENGTH_SHORT).show();
-	//			break;
-	//		case 2:
-	//			Toast.makeText(mContext, "좌표 정확도 : " + actionbarMenu[2].getTitle(), Toast.LENGTH_SHORT).show();
-	//			break;			
-	//		case 3:
-	//			if(isOrgView == true){
-	//				isOrgView = false;
-	//				mOrgImage.setVisibility(View.INVISIBLE);
-	//
-	//				for(int i = 0; i < pieceList.length; i++){
-	//					imgPiece.get(i).setVisibility(View.VISIBLE);	
-	//				}
-	//
-	//				actionbarMenu[3].setTitle("원본 보기");
-	//
-	//			} else {
-	//				isOrgView = true;
-	//				mOrgImage.setVisibility(View.VISIBLE);
-	//
-	//				for(int i = 0; i < pieceList.length; i++){
-	//					imgPiece.get(i).setVisibility(View.INVISIBLE);	
-	//				}
-	//
-	//				actionbarMenu[3].setTitle("퍼즐 보기");
-	//			}
-	//			break;
-	//		default:
-	//			return false;
-	//		}
-	//
-	//		return true;
-	//	}
 
 	public static void KLog(String tag, String text){
 		boolean enable = true;
